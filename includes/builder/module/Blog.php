@@ -1601,7 +1601,7 @@ class Divi_Child_ET_Builder_Module_Blog extends ET_Builder_Module_Type_PostBased
 					endif;
 				}
 
-				// New or Pre-Owned 2023.
+				// Pre-Owned 2015.
 				$condition = invp_get_the_condition();
 				if ( 'used' === strtolower( $condition ) ) {
 					$condition = 'Pre-Owned';
@@ -1611,9 +1611,56 @@ class Divi_Child_ET_Builder_Module_Blog extends ET_Builder_Module_Type_PostBased
 					esc_html( $condition ),
 					esc_html( invp_get_the_year() )
 				);
-				?>
 
-				<?php if ( 'off' === $fullwidth || ! in_array( $post_format, array( 'link', 'audio', 'quote' ) ) || post_password_required( $post ) ) { ?>
+				// Honda CR-V AWD EX.
+				printf(
+					'<p class="invp-make-model-trim">%s %s %s</p>',
+					esc_html( invp_get_the_make() ),
+					esc_html( invp_get_the_model() ),
+					esc_html( invp_get_the_trim() )
+				);
+
+				// Mileage: 138,521.
+				$odometer = invp_get_the_odometer();
+				if ( ! empty( $odometer ) ) {
+					printf(
+						'<p class="invp-odometer">%s: %s</p>',
+						esc_html( apply_filters( 'invp_odometer_word', 'Mileage' ) ),
+						esc_html( $odometer )
+					);
+				}
+
+				// Price table. "Math block".
+				$price_raw = invp_get_raw_price();
+				if ( 0 === intval( $price_raw ) ) {
+					printf( '<p class="invp_price">%s</p>', invp_get_the_price() );
+				} else {
+				?>
+				<table>
+					<tr>
+						<td class="label-sale">Sale Price</td>
+						<td class="value-sale">$<?php echo number_format( intval( $price_raw ) + 750, 0, '.', ',' ); ?></td>
+					</tr>
+					<tr>
+						<td class="label-coupon">Finance Coupon</td>
+						<td class="value-coupon">$750</td>
+					</tr>
+					<tr>
+						<td class="label-price">Your Price</td>
+						<td class="value-price"><?php echo invp_get_the_price(); ?></td>
+					</tr>
+				</table>
+				<?php
+				}
+
+				// VIN.
+				printf( '<p class="invp-vin"><span class="label">VIN:</span> %s</p>', esc_html( invp_get_the_vin() ) );
+
+				// Stock Number.
+				printf( '<p class="invp-stock-number"><span class="label">Stock:</span> %s</p>', esc_html( invp_get_the_stock_number() ) );
+
+				// Don't show the title.
+				if ( 1 === 2 && ( 'off' === $fullwidth || ! in_array( $post_format, array( 'link', 'audio', 'quote' ) ) || post_password_required( $post ) ) ) { ?>
 					<?php if ( ! in_array( $post_format, array( 'link', 'audio' ) ) || post_password_required( $post ) ) { ?>
 					<<?php echo et_core_intentionally_unescaped( $processed_header_level, 'fixed_string' ); ?> class="entry-title"><a href="<?php esc_url( the_permalink() ); ?>"><?php the_title(); ?></a></<?php echo et_core_intentionally_unescaped( $processed_header_level, 'fixed_string' ); ?>>
 				<?php } ?>
